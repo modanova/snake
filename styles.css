@@ -19,6 +19,16 @@
     height: 80px;
     background: red;
     position: relative;
-    grid-column-start: 2;
+    grid-column-start: 1;
+    grid-row-start: 1;
     
+}
+#snake1 {
+    width: 80px;
+    height: 80px;
+    background: red;
+    position: relative;
+    grid-column-start: 5;
+    grid-row-start: 1;
+
 }
