@@ -1,3 +1,18 @@
+const templateBox = document.getElementById("gridBoxTemplate");
+let gameBoard = document.getElementById("board");
+console.log(templateBox);
+
+const createGame = (rows) => {
+    for (let i = 0; i < rows; i++) {
+        let box = templateBox.content.cloneNode(true);
+        gameBoard.append(box);
+    }
+    
+}
+
+createGame(399);
+
+
 const snake = document.getElementById("snake");
 // Change position use => snake.style.gridColumn = 3; snake.style.gridRow = 3;
 
@@ -45,7 +60,7 @@ const move = () => {
 const reset = () => {
     position.row = 1;
     position.col = 1;
-    direction = 'r';
+    direction = 'none';
 }
 
 const pause = () => {
@@ -57,7 +72,7 @@ const hitWall = (position) => {
     // Check if hitting the wall;
     let dead = false;
 
-    if (position.row > 6 || position.row < 1 || position.col > 6 || position.col < 1) {
+    if (position.row > 20 || position.row < 1 || position.col > 20 || position.col < 1) {
         dead = true;
     }
 
@@ -92,7 +107,7 @@ document.addEventListener("keydown", (e) => {
     checkKey(e);
 });
 
-let speed = 1000;
+let speed = 400;
     setInterval(() => {
         move()
     }, speed);
