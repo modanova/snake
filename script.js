@@ -6,7 +6,38 @@ const position = {
     col: 1
 }
 
+let direction = "r";
+
+
 const move = () => {
+    switch (direction) {
+        case "r":
+        // Move right
+            position.col++;
+            break;
+        case "l":
+        // Move left
+            position.col--;
+            break;
+        case "u":
+        // Move up
+            position.row--;
+            break;
+        case "d":
+        // Move down
+            position.row++;
+            break;
+        case "none":
+        // Move down
+            break;
+    }
+        
+        if (hitWall(position)) {
+            alert("You have died!");
+            reset();
+            return;
+        }
+
     snake.style.gridRow = position.row;
     snake.style.gridColumn = position.col;
 }
@@ -14,79 +45,54 @@ const move = () => {
 const reset = () => {
     position.row = 1;
     position.col = 1;
-    move();
+    direction = 'r';
 }
 
-move();
+const pause = () => {
+    direction = 'none';
+}
 
 
 const hitWall = (position) => {
     // Check if hitting the wall;
-    let alive = 1;
-    if (position > 6 || position < 1) {
-        alive = 0;
+    let dead = false;
+
+    if (position.row > 6 || position.row < 1 || position.col > 6 || position.col < 1) {
+        dead = true;
     }
 
-    return alive;
+    return dead;
 }
 
 function checkKey(e) {
-
     e = e || window.event;
-
-    if (e.keyCode == '38') {
-        // up arrow
-        let alive = 1;
-        position.row--;
-        // Check if hitWall();
-        alive = hitWall(position.row);
-        if (!alive) {
-            alert("You have died!");
-            reset();
-            return;
-        }
-        move();
-        
-    } else if (e.keyCode == '40') {
-        // down arrow
-        let alive = 1;
-        position.row++;
-        // Check if hitWall();
-        alive = hitWall(position.row);
-        if (!alive) {
-            alert("You have died!");
-            reset();
-            return;
-        }
-        move();
-    } else if (e.keyCode == '37') {
-       // left arrow
-        let alive = 1;
-        position.col--;
-        // Check if hitWall();
-        alive = hitWall(position.col);
-        if (!alive) {
-            alert("You have died!");
-            reset();
-            return;
-        }
-        move();
-    } else if (e.keyCode == '39') {
-       // right arrow
-        let alive = 1;
-        position.col++;
-        // Check if hitWall();
-        alive = hitWall(position.col);
-        if (!alive) {
-            alert("You have died!");
-            reset();
-            return;
-        }
-        move();
+    e.preventDefault();
+    console.log(e.keyCode);
+    
+    switch (e.keyCode) {
+        case 37:
+            direction = "l";
+            break;
+        case 38:
+            direction = "u";
+            break;
+        case 39:
+            direction = "r";
+            break;
+        case 40:
+            direction = "d";
+            break;
+        case 32:
+            direction = "none";
+            break;
     }
-
 }
 
-document.addEventListener("keydown", (direction) => {
-    checkKey(direction);
+document.addEventListener("keydown", (e) => {
+    checkKey(e);
 });
+
+let speed = 1000;
+    setInterval(() => {
+        move()
+    }, speed);
