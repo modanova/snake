@@ -1,7 +1,7 @@
 const templateBox = document.getElementById("gridBoxTemplate");
 const gameBoard = document.getElementById("board");
 const snake = document.querySelectorAll(".snake-segment");
-const head = document.querySelector(".head");
+let head = document.querySelector(".head");
 const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
 
@@ -43,6 +43,7 @@ const trackSnake = () => {
     console.log(snakeTrack.body[0]);
 }
 
+let tag = 0;
 const move = () => {
     switch (snakeTrack.direction) {
         case "r":
@@ -124,8 +125,13 @@ const move = () => {
             return;
         }
 
+    head.classList.remove("head");
+    snake[tag].classList.add("head");
+    head = document.querySelector(".head");
     head.style.gridRow = snakeTrack.row;
     head.style.gridColumn = snakeTrack.col;
+    if (tag == 3) tag = 0;
+    else tag++;
 
     // snake.style.gridRow = snakeTrack.row;
     // tail.style.gridRow = snakeTrack.rowTail;

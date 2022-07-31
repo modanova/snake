@@ -33,17 +33,19 @@
 }
 
 .body2 {
+    background-color: yellow;
     grid-column-start: 2;
     grid-row-start: 1;
 }
  
 .body3 {
+    background-color: green;
     grid-column-start: 3;
     grid-row-start: 1;
 }
 
 .body4 {
-    background-color: green;
+    background-color: blue;
     grid-column-start: 4;
     grid-row-start: 1;
 }
