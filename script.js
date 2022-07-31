@@ -12,7 +12,7 @@ const createGame = (rows) => {
 
 createGame(398);
 
-
+// =========== SNAKE MOVEMENT ===========  //
 const snakeTrack = {
     row: 1,
     col: 1,
@@ -26,9 +26,8 @@ const snakeTrack = {
 const trackSnake = () => {
     snakeTrack.coor.shift();
     snakeTrack.coor.push([snakeTrack.row, snakeTrack.col]);
-    console.log(snakeTrack.coor);
+    console.log([snakeTrack.coor[0][0],snakeTrack.coor[0][1]]);
 }
-
 
 const move = () => {
     switch (snakeTrack.direction) {
@@ -82,6 +81,7 @@ const pause = () => {
     snakeTrack.direction = 'pause';
 }
 
+// =========== END GAME ===========  //
 
 const hitWall = (position) => {
     // Check if hitting the wall;
@@ -117,13 +117,15 @@ function checkKey(e) {
     }
 }
 
-const snakeGo = () => {
+const timer = (speed) => {
     snakeTrack.direction = 'r';
-    let speed = 400;
     setInterval(() => {
         move()
     }, speed);
     console.log("this works");
+}
+const snakeGo = () => {
+    timer(400);
 }
 
 document.addEventListener("keydown", (e) => {
@@ -132,8 +134,11 @@ document.addEventListener("keydown", (e) => {
 
 
 playBtn.addEventListener("click", () => {
+    // PROBLEM - ON DOUBLE CLICK TIMER IS SET TWICE!!!
+    // Might be - because it sets the timer async 
 
-    // TODO Interval doesn't work on window.hidden
+    clearInterval(snakeGo);
+    // TODO Interval shoudn't work on window.hidden
             //     document.addEventListener('visibilitychange', function() {
             //     if(document.hidden) {
             //         // tab is now inactive
@@ -148,7 +153,6 @@ playBtn.addEventListener("click", () => {
 
     // Start game by setting interval timer
 
-    clearInterval(snakeGo);
     console.log(snakeTrack.direction);
 
     if (snakeTrack.direction == "none") {
@@ -156,7 +160,48 @@ playBtn.addEventListener("click", () => {
     }
     else {
         reset();
+        move();
     }
 })
 
+
+// =========== ADD FOOD TRACKING =========== //
+
+const food = document.getElementById("food");
+
+// FOOD // 
+
+const foodPosition = {
+    row: 7,
+    col: 8
+}
+
+const randomFood = () => {
+
+    let row = Math.round(Math.random() * 16);
+    let col = Math.round(Math.random() * 16);
+    
+    if (row == snakeTrack.coor[0][0] && col == snakeTrack.coor[0][1]) {
+        randomFood();
+    }
+    foodPosition.row = row;
+    foodPosition.col = col;
+
+    food.style.gridRow = foodPosition.row;
+    food.style.gridColumn = foodPosition.col;
+
+    return foodPosition;
+} 
+
+randomFood();
+
+
+
+
+const trackFood = () => {
+    // TODO 
+    // snakeTrack.coor.shift();
+    // snakeTrack.coor.push([snakeTrack.row, snakeTrack.col]);
+    // console.log([snakeTrack.coor[0][0],snakeTrack.coor[0][1]]);
+}
 

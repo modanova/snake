@@ -41,7 +41,7 @@
     grid-row-start: 1;
 }
 
-#snack {
+#food {
     height: 20px;
     width: 20px;
     background: black;
@@ -50,9 +50,9 @@
     grid-row-start: 4;
 }
 
-.snack {
+.food {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: red;
+    background: white;
 }
