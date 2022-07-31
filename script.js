@@ -1,70 +1,85 @@
 const templateBox = document.getElementById("gridBoxTemplate");
-let gameBoard = document.getElementById("board");
-console.log(templateBox);
+const gameBoard = document.getElementById("board");
+const snake = document.getElementById("snake");
+const playBtn = document.getElementById("play");
 
 const createGame = (rows) => {
     for (let i = 0; i < rows; i++) {
         let box = templateBox.content.cloneNode(true);
         gameBoard.append(box);
-    }
-    
+    } 
 }
 
-createGame(399);
+createGame(398);
 
 
-const snake = document.getElementById("snake");
-// Change position use => snake.style.gridColumn = 3; snake.style.gridRow = 3;
-
-const position = {
+const snakeTrack = {
     row: 1,
-    col: 1
+    col: 1,
+    direction: "none",
+    coor: [
+        // To read [row, col]
+        [1, 1]
+    ]
 }
 
-let direction = "r";
+const trackSnake = () => {
+    snakeTrack.coor.shift();
+    snakeTrack.coor.push([snakeTrack.row, snakeTrack.col]);
+    console.log(snakeTrack.coor);
+}
 
 
 const move = () => {
-    switch (direction) {
+    switch (snakeTrack.direction) {
         case "r":
         // Move right
-            position.col++;
+            snakeTrack.col++;
+            trackSnake();
             break;
         case "l":
         // Move left
-            position.col--;
+            snakeTrack.col--;
+            trackSnake();
             break;
         case "u":
         // Move up
-            position.row--;
+            snakeTrack.row--;
+            trackSnake();
             break;
         case "d":
         // Move down
-            position.row++;
+            snakeTrack.row++;
+            trackSnake();
+            break;
+        case "pause":
+        // Pause direction
             break;
         case "none":
-        // Move down
+            // On startgame
             break;
     }
         
-        if (hitWall(position)) {
+        if (hitWall(snakeTrack)) {
+            clearInterval(snakeGo);
             alert("You have died!");
             reset();
+            trackSnake();
             return;
         }
 
-    snake.style.gridRow = position.row;
-    snake.style.gridColumn = position.col;
+    snake.style.gridRow = snakeTrack.row;
+    snake.style.gridColumn = snakeTrack.col;
 }
 
 const reset = () => {
-    position.row = 1;
-    position.col = 1;
-    direction = 'none';
+    snakeTrack.row = 1;
+    snakeTrack.col = 1;
+    snakeTrack.direction = 'none';
 }
 
 const pause = () => {
-    direction = 'none';
+    snakeTrack.direction = 'pause';
 }
 
 
@@ -82,32 +97,66 @@ const hitWall = (position) => {
 function checkKey(e) {
     e = e || window.event;
     e.preventDefault();
-    console.log(e.keyCode);
     
     switch (e.keyCode) {
         case 37:
-            direction = "l";
+            snakeTrack.direction = "l";
             break;
         case 38:
-            direction = "u";
+            snakeTrack.direction = "u";
             break;
         case 39:
-            direction = "r";
+            snakeTrack.direction = "r";
             break;
         case 40:
-            direction = "d";
+            snakeTrack.direction = "d";
             break;
         case 32:
-            direction = "none";
+            snakeTrack.direction = "none";
             break;
     }
+}
+
+const snakeGo = () => {
+    snakeTrack.direction = 'r';
+    let speed = 400;
+    setInterval(() => {
+        move()
+    }, speed);
+    console.log("this works");
 }
 
 document.addEventListener("keydown", (e) => {
     checkKey(e);
 });
 
-let speed = 400;
-    setInterval(() => {
-        move()
-    }, speed);
+
+playBtn.addEventListener("click", () => {
+
+    // TODO Interval doesn't work on window.hidden
+            //     document.addEventListener('visibilitychange', function() {
+            //     if(document.hidden) {
+            //         // tab is now inactive
+            //         // temporarily clear timer using clearInterval() / clearTimeout()
+            //     }
+            //     else {
+            //         // tab is active again
+            //         // restart timers
+            //     }
+            // });
+
+
+    // Start game by setting interval timer
+
+    clearInterval(snakeGo);
+    console.log(snakeTrack.direction);
+
+    if (snakeTrack.direction == "none") {
+        snakeGo();
+    }
+    else {
+        reset();
+    }
+})
+
+

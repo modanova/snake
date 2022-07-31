@@ -8,15 +8,21 @@
     <title>Snake game</title>
 </head>
 <body>
+    <button id="play" type="submit">Play</button>
     <div id="game">
 
         <div id="board">
-            <div id="snake"></div>            
+            <div id="snake" class="flex">
+                <div class="snake"></div>
+        </div>
+            <div id="snack" class="flex">
+                <div class="snack"></div>
+            </div>
         </div>
     </div>
 
     <template id="gridBoxTemplate">
-        <div class="box">1</div>
+        <div class="box"></div>
     </template>
 <script src="script.js"></script>
 </body>

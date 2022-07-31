@@ -6,22 +6,32 @@
     grid-template-columns: repeat(20, 20px);
     justify-content: center;
     align-content: center;
-    gap: 0.5px;
 }
 
 .box {
     background: black;
 }
 
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #snake {
     width: 20px;
     height: 20px;
-    background: white;
+    background-color: black;
     position: relative;
     grid-column-start: 1;
     grid-row-start: 1;
-    
 }
+.snake {
+    width: 15px;
+    height: 15px;
+    background: white;
+}
+
 #snake1 {
     width: 20px;
     height: 20px;
@@ -29,4 +39,20 @@
     position: relative;
     grid-column-start: 5;
     grid-row-start: 1;
+}
+
+#snack {
+    height: 20px;
+    width: 20px;
+    background: black;
+    position: relative;
+    grid-column-start: 6;
+    grid-row-start: 4;
+}
+
+.snack {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: red;
 }
