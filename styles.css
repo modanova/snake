@@ -1,6 +1,7 @@
 #board {
-    width: 100vw;
-    height: 100vh;
+    width: 450px;
+    height: 450px;
+    background-color: white;
     display: grid;
     grid-template-rows: repeat(20, 20px);
     grid-template-columns: repeat(20, 20px);
@@ -18,28 +19,49 @@
     align-items: center;
 }
 
-#snake {
+.snake-box {
     width: 20px;
     height: 20px;
     background-color: black;
     position: relative;
-    grid-column-start: 1;
+    grid-column-start: 4;
     grid-row-start: 1;
 }
 .snake {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background: white;
 }
 
-#snake1 {
+.snake-block {
     width: 20px;
     height: 20px;
-    background: red;
+    background-color: black;
     position: relative;
-    grid-column-start: 5;
+}
+
+.body1 {
+    grid-column-start: 3;
     grid-row-start: 1;
 }
+
+.body2 {
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+ 
+.body3 {
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.snake-block {
+    width: 20px;
+    height: 20px;
+    background: white;
+}
+
+
 
 #food {
     height: 20px;

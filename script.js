@@ -1,6 +1,7 @@
 const templateBox = document.getElementById("gridBoxTemplate");
 const gameBoard = document.getElementById("board");
 const snake = document.getElementById("snake");
+const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
 
 const createGame = (rows) => {
@@ -14,25 +15,36 @@ createGame(398);
 
 // =========== SNAKE MOVEMENT ===========  //
 const snakeTrack = {
+    // Head 
     row: 1,
-    col: 1,
+    col: 4,
+
+    // Tail
+    rowTail: 1,
+    colTail: 1,
+
+    body: [
+        // Read [row, col]
+        // body
+        [1, 3],
+        [1, 2]
+    ], 
+    
     direction: "none",
-    coor: [
-        // To read [row, col]
-        [1, 1]
-    ]
 }
 
-const trackSnake = () => {
-    snakeTrack.coor.shift();
-    snakeTrack.coor.push([snakeTrack.row, snakeTrack.col]);
-    console.log([snakeTrack.coor[0][0],snakeTrack.coor[0][1]]);
-}
+//TODO UPDATE SNAKE TRACKING
+// const trackSnake = () => {
+//     snakeTrack.body.shift();
+//     snakeTrack.body.push([snakeTrack.row, snakeTrack.col]);
+//     console.log(snakeTrack.body);
+// }
 
 const move = () => {
     switch (snakeTrack.direction) {
         case "r":
         // Move right
+           
             snakeTrack.col++;
             trackSnake();
             break;
@@ -68,7 +80,10 @@ const move = () => {
         }
 
     snake.style.gridRow = snakeTrack.row;
+    tail.style.gridRow = snakeTrack.rowTail;
+
     snake.style.gridColumn = snakeTrack.col;
+    tail.style.gridColumn = snakeTrack.colTail;
 }
 
 const reset = () => {
@@ -93,6 +108,9 @@ const hitWall = (position) => {
 
     return dead;
 }
+
+// TO DO 
+// TO END GAME IF BUMPING INTO ITSELF
 
 function checkKey(e) {
     e = e || window.event;
@@ -186,7 +204,8 @@ const randomFood = () => {
     let row = Math.round(Math.random() * 16);
     let col = Math.round(Math.random() * 16);
     
-    if (row == snakeTrack.coor[0][0] && col == snakeTrack.coor[0][1]) {
+    // TO AVOID PUTTING A SNACK ON SNAKE POSITION
+    if (row == snakeTrack.row && col == snakeTrack.col) {
         randomFood();
     }
 

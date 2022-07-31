@@ -10,20 +10,39 @@
 <body>
     <button id="play" type="submit">Play</button>
     <div id="game">
-
         <div id="board">
-            <div id="snake" class="flex">
+
+            <div id="snake" class="snake-box flex">
                 <div class="snake"></div>
-        </div>
+            </div>
+            
+            <div class="snake-block" class="body1 flex">
+                <div class="snake-block"></div>
+            </div>
+
+            <div class="snake-block" class="body2 flex">
+                <div class="snake-block"></div>
+            </div>
+
+            <div class="snake-block tail" class="body3 flex">
+                <div class="snake-block"></div>
+            </div>
+            
             <div id="food" class="flex">
                 <div class="food"></div>
             </div>
+            
         </div>
     </div>
 
     <template id="gridBoxTemplate">
         <div class="box"></div>
     </template>
+
+    <template id="snake-block">
+        <div class="snake-block"></div>
+    </template>
+
 <script src="script.js"></script>
 </body>
 </html>
