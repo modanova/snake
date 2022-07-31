@@ -19,11 +19,6 @@ const snakeTrack = {
     // Head 
     row: 1,
     col: 4,
-
-    // Tail
-    rowTail: 1,
-    colTail: 1,
-
     body: [
         // Read [row, col]
         // Head
