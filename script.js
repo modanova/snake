@@ -22,10 +22,10 @@ const snakeTrack = {
     body: [
         // Read [row, col]
         // Head
-        [1, 4],
+        [1, 1],
         // Body
-        [1, 3],
-        [1, 2],
+        [1, 1],
+        [1, 1],
         // Tail
         [1, 1]
     ], 
@@ -195,12 +195,12 @@ const snakeGo = () => {
     timer(400);
 }
 
-document.addEventListener("keydown", (e) => {
-    checkKey(e);
-});
 
 
 playBtn.addEventListener("click", () => {
+    document.addEventListener("keydown", (e) => {
+        checkKey(e);
+    });
     // PROBLEM - ON DOUBLE CLICK TIMER IS SET TWICE!!!
     // Might be - because it sets the timer async 
 

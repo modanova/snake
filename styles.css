@@ -34,19 +34,19 @@
 
 .body2 {
     background-color: yellow;
-    grid-column-start: 2;
+    grid-column-start: 1;
     grid-row-start: 1;
 }
  
 .body3 {
     background-color: green;
-    grid-column-start: 3;
+    grid-column-start: 1;
     grid-row-start: 1;
 }
 
 .body4 {
     background-color: blue;
-    grid-column-start: 4;
+    grid-column-start: 1;
     grid-row-start: 1;
 }
 
