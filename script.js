@@ -176,6 +176,11 @@ const foodPosition = {
     col: 8
 }
 
+const moveFood = (row, col) => {
+    food.style.gridRow = row;
+    food.style.gridColumn = col;
+}
+
 const randomFood = () => {
 
     let row = Math.round(Math.random() * 16);
@@ -184,11 +189,11 @@ const randomFood = () => {
     if (row == snakeTrack.coor[0][0] && col == snakeTrack.coor[0][1]) {
         randomFood();
     }
+
     foodPosition.row = row;
     foodPosition.col = col;
 
-    food.style.gridRow = foodPosition.row;
-    food.style.gridColumn = foodPosition.col;
+    moveFood(row, col);
 
     return foodPosition;
 } 
@@ -196,12 +201,11 @@ const randomFood = () => {
 randomFood();
 
 
+// ████████╗░█████╗░  ██████╗░░█████╗░
+// ╚══██╔══╝██╔══██╗  ██╔══██╗██╔══██╗
+// ░░░██║░░░██║░░██║  ██║░░██║██║░░██║
+// ░░░██║░░░██║░░██║  ██║░░██║██║░░██║
+// ░░░██║░░░╚█████╔╝  ██████╔╝╚█████╔╝
+// ░░░╚═╝░░░░╚════╝░  ╚═════╝░░╚════╝░
 
-
-const trackFood = () => {
-    // TODO 
-    // snakeTrack.coor.shift();
-    // snakeTrack.coor.push([snakeTrack.row, snakeTrack.col]);
-    // console.log([snakeTrack.coor[0][0],snakeTrack.coor[0][1]]);
-}
-
+// ========= SNAKE EATS SNACK ========= //
