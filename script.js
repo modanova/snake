@@ -1,6 +1,7 @@
 const templateBox = document.getElementById("gridBoxTemplate");
 const gameBoard = document.getElementById("board");
-const snake = document.getElementById("snake");
+const snake = document.querySelectorAll(".snake-segment");
+const head = document.querySelector(".head");
 const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
 
@@ -25,42 +26,86 @@ const snakeTrack = {
 
     body: [
         // Read [row, col]
-        // body
+        // Head
+        [1, 4],
+        // Body
         [1, 3],
-        [1, 2]
+        [1, 2],
+        // Tail
+        [1, 1]
     ], 
     
     direction: "none",
 }
 
 //TODO UPDATE SNAKE TRACKING
-// const trackSnake = () => {
-//     snakeTrack.body.shift();
-//     snakeTrack.body.push([snakeTrack.row, snakeTrack.col]);
-//     console.log(snakeTrack.body);
-// }
+const trackSnake = () => {
+    console.log(snakeTrack.body[0]);
+}
 
 const move = () => {
     switch (snakeTrack.direction) {
         case "r":
         // Move right
-           
-            snakeTrack.col++;
+        // Take first element and move it forward
+            
+            let nextRight = [];
+            nextRight.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
+            nextRight[1]++; // col++
+            
+            snakeTrack.body.unshift(nextRight); // add new head coordinates to front of body
+            snakeTrack.body.pop(); // remove last element
+            
+        // Update snakeTrack.col from body's first element
+            snakeTrack.col = snakeTrack.body[0][1];
+
             trackSnake();
+
             break;
+        
         case "l":
         // Move left
-            snakeTrack.col--;
+        // Take first element and move it forward
+            let nextLeft = [];
+            nextLeft.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
+            nextLeft[1]--; // col--
+            
+            snakeTrack.body.unshift(nextLeft); // add new head coordinates to front of body
+            snakeTrack.body.pop(); // remove last element
+            
+        // Update snakeTrack.col from body's first element
+            snakeTrack.col = snakeTrack.body[0][1];
+
             trackSnake();
             break;
         case "u":
         // Move up
-            snakeTrack.row--;
+            // Take first element and move it forward
+            let nextUp = [];
+            nextUp.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
+            nextUp[0]--; // row--
+            
+            snakeTrack.body.unshift(nextUp); // add new head coordinates to front of body
+            snakeTrack.body.pop(); // remove last element
+            
+        // Update snakeTrack.col from body's first element
+            snakeTrack.row = snakeTrack.body[0][0];
+                        
             trackSnake();
             break;
         case "d":
         // Move down
-            snakeTrack.row++;
+            // Take first element and move it forward
+            let nextDown = [];
+            nextDown.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
+            nextDown[0]++; // row++
+            
+            snakeTrack.body.unshift(nextDown); // add new head coordinates to front of body
+            snakeTrack.body.pop(); // remove last element
+            
+        // Update snakeTrack.col from body's first element
+            snakeTrack.row = snakeTrack.body[0][0];
+
             trackSnake();
             break;
         case "pause":
@@ -79,11 +124,14 @@ const move = () => {
             return;
         }
 
-    snake.style.gridRow = snakeTrack.row;
-    tail.style.gridRow = snakeTrack.rowTail;
+    head.style.gridRow = snakeTrack.row;
+    head.style.gridColumn = snakeTrack.col;
 
-    snake.style.gridColumn = snakeTrack.col;
-    tail.style.gridColumn = snakeTrack.colTail;
+    // snake.style.gridRow = snakeTrack.row;
+    // tail.style.gridRow = snakeTrack.rowTail;
+
+    // snake.style.gridColumn = snakeTrack.col;
+    // tail.style.gridColumn = snakeTrack.colTail;
 }
 
 const reset = () => {
