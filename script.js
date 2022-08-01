@@ -102,9 +102,7 @@ const move = () => {
 
   if (hitWall() || hitSelf()) {
     clearInterval(snakeGo);
-    alert("You have died!");
-    reset();
-    trackSnake();
+    window.location.reload();
     return;
   }
 
@@ -115,21 +113,9 @@ const move = () => {
   // tail.style.gridColumn = snakeTrack.colTail;
 };
 
-const reset = () => {
-  snakeTrack.row = 1;
-  snakeTrack.col = 1;
-  snakeTrack.body = [
-    [1, 1],
-    [1, 1],
-    [1, 1],
-    [1, 1],
-  ];
-  snake.forEach((x) => {
-    x.style.gridRow = 1;
-    x.style.gridColumn = 1;
-  });
-  snakeTrack.direction = "r";
-};
+// const reset = () => {
+//   window.location.reload();
+// };
 
 const pause = () => {
   snakeTrack.direction = "pause";
