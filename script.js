@@ -1,9 +1,13 @@
 const templateBox = document.getElementById("gridBoxTemplate");
+const snakeSegment = document.getElementById("snake-block");
 const gameBoard = document.getElementById("board");
 const snake = document.querySelectorAll(".snake-segment");
 let head = document.querySelector(".head");
 const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
+
+let snakeLen = 4;
+let tag = 0;
 
 
 // =========== CREATE GAME GRID ===========  //
@@ -43,11 +47,10 @@ const trackSnake = () => {
     head = document.querySelector(".head");
     head.style.gridRow = snakeTrack.row;
     head.style.gridColumn = snakeTrack.col;
-    if (tag == 3) tag = 0;
+    if (tag == (snakeLen-1)) tag = 0;
     else tag++;
 }
 
-let tag = 0;
 const move = () => {
     switch (snakeTrack.direction) {
         case "r":
@@ -133,7 +136,7 @@ const move = () => {
         }
 
     
-    
+    eatFood();
 
     // snake.style.gridRow = snakeTrack.row;
     // tail.style.gridRow = snakeTrack.rowTail;
@@ -286,11 +289,27 @@ const randomFood = () => {
 randomFood();
 
 
-// ████████╗░█████╗░  ██████╗░░█████╗░
-// ╚══██╔══╝██╔══██╗  ██╔══██╗██╔══██╗
-// ░░░██║░░░██║░░██║  ██║░░██║██║░░██║
-// ░░░██║░░░██║░░██║  ██║░░██║██║░░██║
-// ░░░██║░░░╚█████╔╝  ██████╔╝╚█████╔╝
-// ░░░╚═╝░░░░╚════╝░  ╚═════╝░░╚════╝░
-
 // ========= SNAKE EATS SNACK ========= //
+
+const eatFood = () => {
+    if (snakeTrack.row == foodPosition.row && snakeTrack.col == foodPosition.col) {
+        
+        const newTailCoor = snakeTrack.body[snakeLen - 1];
+        snakeTrack.body.unshift(newTailCoor);
+        
+        let newSegment = snakeSegment.content.cloneNode(true);
+        gameBoard.prepend(newSegment);
+        snakeLen++;
+        newSegment = gameBoard.querySelector(".snake-segment");
+        newSegment.classList.add("body" + snakeLen);
+
+        newSegment.style.gridRow = newTailCoor[0];
+        newSegment.style.gridColumn = newTailCoor[1];
+
+        tag = snakeLen;
+        
+
+        console.log("yum");
+
+    }
+}

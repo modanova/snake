@@ -24,6 +24,8 @@
     height: 20px;
     background-color: white;
     position: relative;
+    grid-column-start: 1;
+    grid-row-start: 1;
 }
 
 .body1 {
