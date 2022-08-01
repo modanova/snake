@@ -40,7 +40,7 @@ const snakeTrack = {
     direction: "none",
 }
 
-// TODO UPDATE SNAKE TRACKING
+// SNAKE TRACKING
 const trackSnake = () => {
     head.classList.remove("head");
     snake[tag].classList.add("head");
@@ -52,6 +52,7 @@ const trackSnake = () => {
 }
 
 const move = () => {
+    let newTail = [];
     switch (snakeTrack.direction) {
         case "r":
         // Move right
@@ -61,11 +62,22 @@ const move = () => {
             nextRight.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
             nextRight[1]++; // col++
             
-            snakeTrack.body.unshift(nextRight); // add new head coordinates to front of body
-            snakeTrack.body.pop(); // remove last element
+            newTail = eatFood(nextRight);
+            
+            if (newTail) {
+                // move forward
+                snakeTrack.body.unshift(nextRight); // add new head coordinates to front of body
+                eatGrow();
+            }
+            else {
+                // move as normal
+                snakeTrack.body.unshift(nextRight); // add new head coordinates to front of body
+                snakeTrack.body.pop(); // remove last element
+            }
             
         // Update snakeTrack.col from body's first element
             snakeTrack.col = snakeTrack.body[0][1];
+
 
             trackSnake();
 
@@ -77,9 +89,17 @@ const move = () => {
             let nextLeft = [];
             nextLeft.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
             nextLeft[1]--; // col--
-            
-            snakeTrack.body.unshift(nextLeft); // add new head coordinates to front of body
-            snakeTrack.body.pop(); // remove last element
+
+            newTail = eatFood(nextLeft);            
+            if (newTail) {
+                // move forward
+                snakeTrack.body.unshift(nextLeft); // add new head coordinates to front of body
+            }
+            else {
+                // move as normal
+                snakeTrack.body.unshift(nextLeft); // add new head coordinates to front of body
+                snakeTrack.body.pop(); // remove last element
+            }
             
         // Update snakeTrack.col from body's first element
             snakeTrack.col = snakeTrack.body[0][1];
@@ -93,8 +113,17 @@ const move = () => {
             nextUp.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
             nextUp[0]--; // row--
             
-            snakeTrack.body.unshift(nextUp); // add new head coordinates to front of body
-            snakeTrack.body.pop(); // remove last element
+            newTail = eatFood(nextUp);
+
+            if (newTail) {
+                // move forward
+                snakeTrack.body.unshift(nextUp); // add new head coordinates to front of body
+            }
+            else {
+                // move as normal
+                snakeTrack.body.unshift(nextUp); // add new head coordinates to front of body
+                snakeTrack.body.pop(); // remove last element
+            }
             
         // Update snakeTrack.col from body's first element
             snakeTrack.row = snakeTrack.body[0][0];
@@ -104,12 +133,22 @@ const move = () => {
         case "d":
         // Move down
             // Take first element and move it forward
+            
             let nextDown = [];
             nextDown.push(snakeTrack.body[0][0], snakeTrack.body[0][1]); // take body's first element = head
             nextDown[0]++; // row++
             
-            snakeTrack.body.unshift(nextDown); // add new head coordinates to front of body
-            snakeTrack.body.pop(); // remove last element
+            newTail = eatFood(nextDown);
+
+            if (newTail) {
+                // move forward
+                snakeTrack.body.unshift(nextDown); // add new head coordinates to front of body
+            }
+            else {
+                // move as normal
+                snakeTrack.body.unshift(nextDown); // add new head coordinates to front of body
+                snakeTrack.body.pop(); // remove last element
+            }
             
         // Update snakeTrack.col from body's first element
             snakeTrack.row = snakeTrack.body[0][0];
@@ -134,9 +173,6 @@ const move = () => {
             trackSnake();
             return;
         }
-
-    
-    eatFood();
 
     // snake.style.gridRow = snakeTrack.row;
     // tail.style.gridRow = snakeTrack.rowTail;
@@ -274,16 +310,19 @@ const randomFood = () => {
     let col = Math.round(Math.random() * 16);
     
     // TO AVOID PUTTING A SNACK ON SNAKE POSITION
+    // TODO UPDATE 
     if (row == snakeTrack.row && col == snakeTrack.col) {
         randomFood();
     }
+    else {
+        foodPosition.row = row;
+        foodPosition.col = col;
+    
+        moveFood(row, col);
+    
+        return foodPosition;
+    }
 
-    foodPosition.row = row;
-    foodPosition.col = col;
-
-    moveFood(row, col);
-
-    return foodPosition;
 } 
 
 randomFood();
@@ -291,25 +330,53 @@ randomFood();
 
 // ========= SNAKE EATS SNACK ========= //
 
-const eatFood = () => {
-    if (snakeTrack.row == foodPosition.row && snakeTrack.col == foodPosition.col) {
-        
-        const newTailCoor = snakeTrack.body[snakeLen - 1];
-        snakeTrack.body.unshift(newTailCoor);
-        
-        let newSegment = snakeSegment.content.cloneNode(true);
-        gameBoard.prepend(newSegment);
-        snakeLen++;
-        newSegment = gameBoard.querySelector(".snake-segment");
-        newSegment.classList.add("body" + snakeLen);
+const eatFood = (newMove) => {
+    // newMove [1, 4]
+    // Snack [1, 4]
 
-        newSegment.style.gridRow = newTailCoor[0];
-        newSegment.style.gridColumn = newTailCoor[1];
-
-        tag = snakeLen;
-        
-
+    if (newMove[0] == foodPosition.row && newMove[1] == foodPosition.col) {
+        randomFood();
         console.log("yum");
+        const newTailCoor = snakeTrack.body[snakeLen - 1];
+        
+        console.log(newTailCoor);
+        console.log(snakeTrack.body);
 
+        return newTailCoor;
     }
+    return false;
+
+}
+
+const eatGrow = () => {
+
+
+    // 8888888888888888888888888888       88888888888          888888888888888              888888888888
+    // 8888888888888888888888888888      88888888888888        888888888888888888          88888888888888
+    //             888                  88            88       888              88        88            88
+    //             888                 888            888      888               88      888            888
+    //             888                 888            888      888                88     888            888
+    //             888                 888            888      888                88     888            888
+    //             888                 888            888      888                88     888            888
+    //             888                 888            888      888                88     888            888
+    //             888                 888            888      888                88     888            888
+    //             888                 888            888      888                88     888            888
+    //             888                 888            888      888                88     888            888
+    //             888                  88            88       888               88       88            88
+    //             888                   88888888888888        8888888888888888888         88888888888888
+    //             888                     8888888888          888888888888888888            8888888888
+
+
+    // let newSegment = snakeSegment.content.cloneNode(true);
+    // gameBoard.prepend(newSegment);
+    // snakeLen++;
+    // newSegment = gameBoard.querySelector(".snake-segment");
+    // newSegment.classList.add("body" + snakeLen);
+    
+    // newSegment.style.gridRow = newTailCoor[0];
+    // newSegment.style.gridColumn = newTailCoor[1];
+    
+    // tag = snakeLen;
+    console.log("I'm big!");
+
 }
