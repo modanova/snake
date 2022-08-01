@@ -2,11 +2,9 @@ const templateBox = document.getElementById("gridBoxTemplate");
 const snakeSegment = document.getElementById("snake-block");
 const gameBoard = document.getElementById("board");
 let snake = document.querySelectorAll(".snake-segment");
-let head = document.querySelector(".head");
 const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
 
-let snakeLen = 4;
 let tag = 0;
 
 // =========== CREATE GAME GRID ===========  //
@@ -28,12 +26,12 @@ const snakeTrack = {
   body: [
     // Read [row, col]
     // Head
-    [1, 1],
+    [1, 4, snake[0]],
     // Body
-    [1, 1],
-    [1, 1],
+    [1, 3, snake[1]],
+    [1, 2, snake[2]],
     // Tail
-    [1, 1],
+    [1, 1, snake[3]],
   ],
 
   direction: "none",
@@ -41,24 +39,18 @@ const snakeTrack = {
 
 // SNAKE TRACKING
 const trackSnake = () => {
-  head.classList.remove("head");
+  let head = snakeTrack.body[0];
+    // Update snakeTrack.col from body's first element
+  snakeTrack.row = head[0];
+  snakeTrack.col = head[1];
 
-  snake = document.querySelectorAll(".snake-segment");
-  console.log(snake, tag);
-
-  snake[tag].classList.add("head");
-  head = document.querySelector(".head");
-
-  head.style.gridRow = snakeTrack.row;
-  head.style.gridColumn = snakeTrack.col;
-
-  if (tag == snakeLen - 1) tag = 0;
-  else tag++;
+  head[2].style.gridRow = head[0];
+  head[2].style.gridColumn = head[1];
 };
 
 const move = () => {
-  let newTail = [];
   let newHead = [...snakeTrack.body[0]];
+  newHead[2] = undefined;
   switch (snakeTrack.direction) {
     case "r":
       // Move right
@@ -95,25 +87,20 @@ const move = () => {
       return;
   }
 
-  newTail = eatFood(newHead);
-
-  if (newTail) {
-    // move forward
+  if (eatFood(newHead)) {
+      // if newHead is food, then insert new element as newHead
     snakeTrack.body.unshift(newHead); // add new head coordinates to front of body
-    eatGrow();
+    eatGrow(newHead);
   } else {
-    // move as normal
+    // move as normal, tail to the head
+    let oldTail = snakeTrack.body.pop();
+    newHead[2] = oldTail[2];
     snakeTrack.body.unshift(newHead); // add new head coordinates to front of body
-    snakeTrack.body.pop(); // remove last element
   }
-
-  // Update snakeTrack.col from body's first element
-  snakeTrack.row = snakeTrack.body[0][0];
-  snakeTrack.col = snakeTrack.body[0][1];
 
   trackSnake();
 
-  if (hitWall()) {
+  if (hitWall() || hitSelf()) {
     clearInterval(snakeGo);
     alert("You have died!");
     reset();
@@ -154,7 +141,6 @@ const pause = () => {
 const hitWall = () => {
   // Check if hitting the wall;
   let dead = false;
-
   if (
     snakeTrack.row > 20 ||
     snakeTrack.row < 1 ||
@@ -173,8 +159,13 @@ const hitSelf = () => {
   let dead = false;
 
   let coordinates = snakeTrack.body;
-  coordinates = coordinates.map((x) => x.join("."));
-
+  coordinates = coordinates.map((x) => x[0] + "." + x[1]);
+  
+  //Check if all coordinates are unique
+  // If not you're dead
+  if ((new Set(coordinates)).size !== coordinates.length) {
+    dead = true;
+  }
   return dead;
 };
 
@@ -286,28 +277,21 @@ const eatFood = (newMove) => {
   if (newMove[0] == foodPosition.row && newMove[1] == foodPosition.col) {
     randomFood();
     console.log("yum");
-    const newTailCoor = snakeTrack.body[snakeLen - 1];
-
-    console.log(newTailCoor);
     console.log(snakeTrack.body);
 
-    return newTailCoor;
+    return true;
   }
   return false;
 };
 
-const eatGrow = () => {
+const eatGrow = (newHead) => {
   let newSegment = snakeSegment.content.cloneNode(true);
-  head.after(newSegment);
-  // gameBoard.prepend(newSegment);
-  snakeLen++;
-
+  gameBoard.prepend(newSegment);
   newSegment = gameBoard.querySelector(".snake-segment");
+  newHead[2] = newSegment;
 
-  let newTail = snakeTrack.body[snakeLen - 1];
-
-  newSegment.style.gridRow = newTail[0];
-  newSegment.style.gridColumn = newTail[1];
+  newSegment.style.gridRow = newHead[0];
+  newSegment.style.gridColumn = newHead[1];
 
   console.log("I'm big!");
 };
