@@ -38,8 +38,13 @@ const snakeTrack = {
 
 // TODO UPDATE SNAKE TRACKING
 const trackSnake = () => {
-    console.log(snakeTrack.body[0]);
-
+    head.classList.remove("head");
+    snake[tag].classList.add("head");
+    head = document.querySelector(".head");
+    head.style.gridRow = snakeTrack.row;
+    head.style.gridColumn = snakeTrack.col;
+    if (tag == 3) tag = 0;
+    else tag++;
 }
 
 let tag = 0;
@@ -120,20 +125,15 @@ const move = () => {
     }
         
         if (hitWall()) {
-            clearInterval(timer);
+            clearInterval(snakeGo);
             alert("You have died!");
             reset();
             trackSnake();
             return;
         }
 
-    head.classList.remove("head");
-    snake[tag].classList.add("head");
-    head = document.querySelector(".head");
-    head.style.gridRow = snakeTrack.row;
-    head.style.gridColumn = snakeTrack.col;
-    if (tag == 3) tag = 0;
-    else tag++;
+    
+    
 
     // snake.style.gridRow = snakeTrack.row;
     // tail.style.gridRow = snakeTrack.rowTail;
@@ -150,7 +150,7 @@ const reset = () => {
         x.style.gridRow = 1;
         x.style.gridColumn = 1;
     })
-    snakeTrack.direction = 'none';
+    snakeTrack.direction = 'r';
 }
 
 const pause = () => {
@@ -180,7 +180,6 @@ const hitSelf = () => {
     coordinates = coordinates.map(x => x.join("."));
 
     
-
     return dead;
 }
 
@@ -204,22 +203,14 @@ function checkKey(e) {
             snakeTrack.direction = "d";
             break;
         case 32:
-            snakeTrack.direction = "none";
+            snakeTrack.direction = "pause";
             break;
     }
 }
 
-const timer = (speed) => {
-    snakeTrack.direction = 'r';
-    setInterval(() => {
-        move()
-    }, speed);
-    console.log("this works");
-}
 const snakeGo = () => {
-    timer(400);
+        move();
 }
-
 
 playBtn.addEventListener("click", () => {
     document.addEventListener("keydown", (e) => {
@@ -228,7 +219,7 @@ playBtn.addEventListener("click", () => {
     // PROBLEM - ON DOUBLE CLICK TIMER IS SET TWICE!!!
     // Might be - because it sets the timer async 
 
-    clearInterval(timer);
+    clearInterval(snakeGo);
     // TODO Interval shoudn't work on window.hidden
             //     document.addEventListener('visibilitychange', function() {
             //     if(document.hidden) {
@@ -247,11 +238,13 @@ playBtn.addEventListener("click", () => {
     console.log(snakeTrack.direction);
 
     if (snakeTrack.direction == "none") {
-        snakeGo();
+        snakeTrack.direction = 'r';
+        setInterval(snakeGo, 400);
+        console.log("this works");
     }
     else {
+        clearInterval(snakeGo);
         reset();
-        move();
     }
 })
 
