@@ -5,6 +5,9 @@ let head = document.querySelector(".head");
 const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
 
+
+// =========== CREATE GAME GRID ===========  //
+
 const createGame = (rows) => {
     for (let i = 0; i < rows; i++) {
         let box = templateBox.content.cloneNode(true);
@@ -33,9 +36,10 @@ const snakeTrack = {
     direction: "none",
 }
 
-//TODO UPDATE SNAKE TRACKING
+// TODO UPDATE SNAKE TRACKING
 const trackSnake = () => {
     console.log(snakeTrack.body[0]);
+
 }
 
 let tag = 0;
@@ -104,16 +108,19 @@ const move = () => {
 
             trackSnake();
             break;
+        
         case "pause":
         // Pause direction
+        
             break;
+        
         case "none":
             // On startgame
             break;
     }
         
-        if (hitWall(snakeTrack)) {
-            clearInterval(snakeGo);
+        if (hitWall()) {
+            clearInterval(timer);
             alert("You have died!");
             reset();
             trackSnake();
@@ -138,28 +145,46 @@ const move = () => {
 const reset = () => {
     snakeTrack.row = 1;
     snakeTrack.col = 1;
+    snakeTrack.body = [[1, 1], [1, 1], [1, 1], [1, 1]]
+    snake.forEach(x => {
+        x.style.gridRow = 1;
+        x.style.gridColumn = 1;
+    })
     snakeTrack.direction = 'none';
 }
 
 const pause = () => {
     snakeTrack.direction = 'pause';
+    clearInterval(snakeGo);
 }
 
 // =========== END GAME ===========  //
 
-const hitWall = (position) => {
+const hitWall = () => {
     // Check if hitting the wall;
     let dead = false;
 
-    if (position.row > 20 || position.row < 1 || position.col > 20 || position.col < 1) {
+    if (snakeTrack.row > 20 || snakeTrack.row < 1 || snakeTrack.col > 20 || snakeTrack.col < 1) {
         dead = true;
     }
 
     return dead;
 }
 
-// TO DO 
 // TO END GAME IF BUMPING INTO ITSELF
+const hitSelf = () => {
+    // Check if hitting itself;
+    let dead = false;
+
+    let coordinates = snakeTrack.body;
+    coordinates = coordinates.map(x => x.join("."));
+
+    
+
+    return dead;
+}
+
+// =========== ARROW KEYS EVENT ===========  //
 
 function checkKey(e) {
     e = e || window.event;
@@ -196,7 +221,6 @@ const snakeGo = () => {
 }
 
 
-
 playBtn.addEventListener("click", () => {
     document.addEventListener("keydown", (e) => {
         checkKey(e);
@@ -204,7 +228,7 @@ playBtn.addEventListener("click", () => {
     // PROBLEM - ON DOUBLE CLICK TIMER IS SET TWICE!!!
     // Might be - because it sets the timer async 
 
-    clearInterval(snakeGo);
+    clearInterval(timer);
     // TODO Interval shoudn't work on window.hidden
             //     document.addEventListener('visibilitychange', function() {
             //     if(document.hidden) {
