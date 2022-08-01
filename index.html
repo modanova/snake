@@ -11,23 +11,25 @@
     <button id="play" type="submit">Play</button>
     <div id="game">
         <div id="board">
-
-            <div id="snake" class="snake-box flex">
-                <div class="snake"></div>
-            </div>
             
-            <div class="snake-block" class="body1 flex">
-                <div class="snake-block"></div>
+            <div class="snake-segment" 
+                style="grid-column-start: 4;"
+                style="grid-column-start: 1;" 
+                >
             </div>
+            <div class="snake-segment" 
+                style="grid-column-start: 3;"
+                style="grid-column-start: 1;" 
+                ></div>
+            <div class="snake-segment" 
+                style="grid-column-start: 2;"
+                style="grid-column-start: 1;" 
+                ></div>
+            <div class="snake-segment" 
+                style="grid-column-start: 1;"
+                style="grid-column-start: 1;" 
+                ></div>
 
-            <div class="snake-block" class="body2 flex">
-                <div class="snake-block"></div>
-            </div>
-
-            <div class="snake-block tail" class="body3 flex">
-                <div class="snake-block"></div>
-            </div>
-            
             <div id="food" class="flex">
                 <div class="food"></div>
             </div>
@@ -40,7 +42,7 @@
     </template>
 
     <template id="snake-block">
-        <div class="snake-block"></div>
+        <div class="snake-segment"></div>
     </template>
 
 <script src="script.js"></script>

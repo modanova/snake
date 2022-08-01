@@ -19,41 +19,15 @@
     align-items: center;
 }
 
-.snake-box {
+.snake-segment {
     width: 20px;
     height: 20px;
-    background-color: black;
+    background-color: white;
     position: relative;
-    grid-column-start: 4;
-    grid-row-start: 1;
-}
-.snake {
-    width: 20px;
-    height: 20px;
-    background: white;
-}
-
-.snake-block {
-    width: 20px;
-    height: 20px;
-    background-color: black;
-    position: relative;
-}
-
-.body1 {
-    grid-column-start: 3;
-    grid-row-start: 1;
-}
-
-.body2 {
-    grid-column-start: 2;
-    grid-row-start: 1;
-}
- 
-.body3 {
     grid-column-start: 1;
     grid-row-start: 1;
 }
+
 
 .snake-block {
     width: 20px;
