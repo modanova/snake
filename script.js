@@ -1,7 +1,7 @@
 const templateBox = document.getElementById("gridBoxTemplate");
 const snakeSegment = document.getElementById("snake-block");
 const gameBoard = document.getElementById("board");
-const snake = document.querySelectorAll(".snake-segment");
+let snake = document.querySelectorAll(".snake-segment");
 let head = document.querySelector(".head");
 const tail = document.querySelector(".tail");
 const playBtn = document.getElementById("play");
@@ -43,10 +43,16 @@ const snakeTrack = {
 // SNAKE TRACKING
 const trackSnake = () => {
     head.classList.remove("head");
+
+    snake = document.querySelectorAll(".snake-segment");
+    console.log(snake, tag);
+    
     snake[tag].classList.add("head");
     head = document.querySelector(".head");
+
     head.style.gridRow = snakeTrack.row;
     head.style.gridColumn = snakeTrack.col;
+
     if (tag == (snakeLen-1)) tag = 0;
     else tag++;
 }
@@ -94,6 +100,7 @@ const move = () => {
             if (newTail) {
                 // move forward
                 snakeTrack.body.unshift(nextLeft); // add new head coordinates to front of body
+                eatGrow();
             }
             else {
                 // move as normal
@@ -118,6 +125,7 @@ const move = () => {
             if (newTail) {
                 // move forward
                 snakeTrack.body.unshift(nextUp); // add new head coordinates to front of body
+                eatGrow();
             }
             else {
                 // move as normal
@@ -143,6 +151,7 @@ const move = () => {
             if (newTail) {
                 // move forward
                 snakeTrack.body.unshift(nextDown); // add new head coordinates to front of body
+                eatGrow();
             }
             else {
                 // move as normal
@@ -350,33 +359,18 @@ const eatFood = (newMove) => {
 
 const eatGrow = () => {
 
+    let newSegment = snakeSegment.content.cloneNode(true);
+    gameBoard.prepend(newSegment);
+    snakeLen++;
 
-    // 8888888888888888888888888888       88888888888          888888888888888              888888888888
-    // 8888888888888888888888888888      88888888888888        888888888888888888          88888888888888
-    //             888                  88            88       888              88        88            88
-    //             888                 888            888      888               88      888            888
-    //             888                 888            888      888                88     888            888
-    //             888                 888            888      888                88     888            888
-    //             888                 888            888      888                88     888            888
-    //             888                 888            888      888                88     888            888
-    //             888                 888            888      888                88     888            888
-    //             888                 888            888      888                88     888            888
-    //             888                 888            888      888                88     888            888
-    //             888                  88            88       888               88       88            88
-    //             888                   88888888888888        8888888888888888888         88888888888888
-    //             888                     8888888888          888888888888888888            8888888888
-
-
-    // let newSegment = snakeSegment.content.cloneNode(true);
-    // gameBoard.prepend(newSegment);
-    // snakeLen++;
-    // newSegment = gameBoard.querySelector(".snake-segment");
-    // newSegment.classList.add("body" + snakeLen);
+    newSegment = gameBoard.querySelector(".snake-segment");
+    newSegment.classList.add("body" + snakeLen);
     
-    // newSegment.style.gridRow = newTailCoor[0];
-    // newSegment.style.gridColumn = newTailCoor[1];
+    let newTail = snakeTrack.body[snakeLen-1];
+
+    newSegment.style.gridRow = newTail[0];
+    newSegment.style.gridColumn = newTail[1];
     
-    // tag = snakeLen;
+    tag = 0;
     console.log("I'm big!");
-
 }
