@@ -360,17 +360,16 @@ const eatFood = (newMove) => {
 const eatGrow = () => {
 
     let newSegment = snakeSegment.content.cloneNode(true);
-    gameBoard.prepend(newSegment);
+    head.after(newSegment);
+    // gameBoard.prepend(newSegment);
     snakeLen++;
 
     newSegment = gameBoard.querySelector(".snake-segment");
-    newSegment.classList.add("body" + snakeLen);
     
     let newTail = snakeTrack.body[snakeLen-1];
 
     newSegment.style.gridRow = newTail[0];
     newSegment.style.gridColumn = newTail[1];
     
-    tag = 0;
     console.log("I'm big!");
 }
